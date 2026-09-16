@@ -140,7 +140,7 @@ pip install -r requirements.txt
 
 # CLI
 python main.py --dataset datasets/insurance.csv \
-  --question "Run a linear regression and estimate insurance charges in 2029"
+  --question "Predict insurance claim amount from age, bmi, smoker status, and region"
 
 # Streamlit demo
 streamlit run streamlit_app.py
