@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - run: ruff check .
+
+  eval:
+    runs-on: ubuntu-latest
+    needs: lint
+    # The eval harness makes real OpenAI + E2B calls and spends credits, so it
+    # only runs when both secrets are configured on the repo. Configure
+    # OPENAI_API_KEY and E2B_API_KEY under Settings > Secrets to enable it.
+    if: ${{ vars.RUN_EVAL == 'true' }}
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - run: python -m eval.run_eval
