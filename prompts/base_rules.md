@@ -15,6 +15,10 @@ DATA
   your turn if it exists, and merge your findings into it (don't clobber keys
   other nodes wrote) before you finish. This file is your only memory across
   nodes and calls — do not rely on recalling earlier output.
+- Writing state.json means actually executing a run_python call that reads
+  (if present), updates, and json.dump()s the file to /home/user/state.json.
+  Printing or describing the JSON in your final answer text does NOT persist
+  it — if you never ran the code that wrote the file, your findings are lost.
 
 OPERATING RULES
 - One focused, verifiable step per run_python call. Don't chain unrelated

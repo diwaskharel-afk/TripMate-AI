@@ -66,6 +66,11 @@ class GraphContext:
             )
         record_usage(state.cost, usage)
         raw_state_json = self.sandbox.pull_state_json()
+        if raw_state_json is None:
+            logger.warning(
+                "[%s] no state.json found in the sandbox after this node ran; "
+                "the model likely never wrote it, so nothing was merged", node_name
+            )
         _merge_state_json(state, raw_state_json)
         logger.info("[%s] done: %s", node_name, text[:200])
 
@@ -75,6 +80,12 @@ def build_graph(ctx: GraphContext):
 
     async def classify_node(state: AnalysisState) -> AnalysisState:
         await ctx.run_node(state, "classify", "classify", question=state.question)
+        if state.task_type is None:
+            raise RuntimeError(
+                "classify node finished without writing task_type to state.json "
+                "in the sandbox; the model never persisted its classification, "
+                "so routing after eda would have been wrong."
+            )
         return state
 
     async def ingest_node(state: AnalysisState) -> AnalysisState:
@@ -83,6 +94,8 @@ def build_graph(ctx: GraphContext):
 
     async def eda_node(state: AnalysisState) -> AnalysisState:
         await ctx.run_node(state, "eda", "eda")
+        if not state.eda_findings:
+            logger.warning("eda node finished with no eda_findings written to state.json")
         return state
 
     async def feature_prep_node(state: AnalysisState) -> AnalysisState:
@@ -91,10 +104,14 @@ def build_graph(ctx: GraphContext):
 
     async def model_predict_node(state: AnalysisState) -> AnalysisState:
         await ctx.run_node(state, "model_predict", "model_predict")
+        if not state.models_tried:
+            logger.warning("model_predict node finished with no models_tried written to state.json")
         return state
 
     async def model_forecast_node(state: AnalysisState) -> AnalysisState:
         await ctx.run_node(state, "model_forecast", "model_forecast")
+        if not state.models_tried or not state.forecast:
+            logger.warning("model_forecast node finished with no models_tried/forecast written to state.json")
         return state
 
     async def verify_node(state: AnalysisState) -> AnalysisState:

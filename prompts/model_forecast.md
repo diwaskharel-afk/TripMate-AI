@@ -1,7 +1,10 @@
 NODE: FORECASTING
 
 Features are prepared. task_type is "forecast" — predicting beyond the
-observed time range. Your job this node:
+observed time range. You have a limited tool-call budget for this node — fit
+AND evaluate/backtest each model (baseline or candidate) in ONE run_python
+call each, not separate calls per step, so you have room to finish and write
+state.json. Your job this node:
 
 - Never use a random train/test split for time series — split chronologically
   to avoid leakage. Establish a naive baseline (e.g. last-value or seasonal
@@ -17,11 +20,16 @@ observed time range. Your job this node:
   missing drivers, non-stationarity). Never present a single confident number
   as if it were interpolation.
 
-When done, update /home/user/state.json with:
+When done, run a run_python call that updates /home/user/state.json with:
 - "models_tried": list of {"name", "metrics": {...}, "is_baseline": bool}
   using a consistent metric key across baseline and candidates (e.g. "mae")
   computed on the backtest/holdout window.
 - "forecast": a list of {"period", "point_estimate", "lower", "upper"} for
   the requested future point(s).
+
+Printing the forecast table in your final answer text does not save it — you
+must actually execute the write. An empty or unwritten models_tried/forecast
+means the report will incorrectly say no forecast was produced, so do this
+before you stop.
 
 Then print the forecast table, and stop.

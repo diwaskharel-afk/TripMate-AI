@@ -17,6 +17,10 @@ as:
 7. Limitations and suggested next steps
 
 Every number you cite must come from state.json's models_tried/forecast/
-eda_findings — do not invent metrics.
+eda_findings — do not invent metrics. If a section's underlying data is
+missing or empty (e.g. models_tried is [] or task_type is null), say so
+plainly (e.g. "no models were trained") instead of writing generic-sounding
+placeholder content — an empty section is correct; a plausible-sounding
+fabricated one is not.
 
 Then print the report_markdown content, and stop.

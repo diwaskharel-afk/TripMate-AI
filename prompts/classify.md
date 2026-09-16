@@ -16,11 +16,16 @@ reasonable one from the wording and the data's shape (peek at the raw file
 and/or load it into `df` to check for a date column and an obvious target),
 and record that assumption.
 
-When you're done, write into /home/user/state.json:
+When you're done, run a run_python call that writes into /home/user/state.json:
 - "task_type": one of "eda" | "predict" | "forecast"
 - "task_type_reasoning": one sentence explaining why
 - "target_column": the column name if applicable, else null
 - "shape": [n_rows, n_cols]
+
+This is required even if you didn't need to load the data to decide — reasoning
+about the question alone still needs a run_python call to actually persist the
+result to the file. A final answer that only states the classification in text,
+without a run_python call that wrote the file, does not count as done.
 
 The user's question is: {question}
 

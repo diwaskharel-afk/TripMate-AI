@@ -10,7 +10,11 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 REPO_ROOT = Path(__file__).parent
-load_dotenv(REPO_ROOT / ".env")
+# override=True: .env is the source of truth for these keys, so a stale
+# OPENAI_API_KEY/E2B_API_KEY already set in the OS environment doesn't
+# silently win over what's in .env (load_dotenv's default is to NOT override
+# existing env vars).
+load_dotenv(REPO_ROOT / ".env", override=True)
 
 
 @dataclass

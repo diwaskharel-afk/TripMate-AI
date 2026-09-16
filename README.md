@@ -94,6 +94,32 @@ report, every plot the agent generated embedded as base64 (no external file
 refs, so it's shareable standalone), a metrics table, the verification
 section, and a cost breakdown.
 
+## Example output
+
+A real run on `datasets/insurance.csv` (`predict` branch) produces plots like
+this one, generated and saved by the agent itself during EDA:
+
+![Claim amount by smoker status](docs/example-plot.png)
+
+...alongside a metrics table comparing every model tried:
+
+| Model                    | RMSE on Test Set |
+|---------------------------|------------------|
+| Mean Predictor (baseline) | 12830.81         |
+| Linear Regression         | 12356.45         |
+| Random Forest Regressor   | 13933.33         |
+
+...and a verification section confirming every number in the report traces
+back to real computed results:
+
+```
+Verification: OK — no discrepancies found.
+```
+
+All of this — the markdown report, embedded plots, metrics table,
+verification, and a per-node cost/latency breakdown — ships as one
+self-contained `report.html` file.
+
 ## Evaluation
 
 `eval/` is a tiny but real benchmark: three synthetic, deterministically

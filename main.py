@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import logging
 import time
 from pathlib import Path
 
@@ -18,6 +19,8 @@ from graph import GraphContext, build_graph
 from report import assemble_report
 from sandbox import AnalysisSandbox
 from schema import AnalysisState
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
 
 async def run_pipeline(settings: Settings) -> AnalysisState:

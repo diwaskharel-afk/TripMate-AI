@@ -13,8 +13,13 @@ Ingestion is done (see state.json for columns/dtypes). Your job this node:
   /home/user/plot_<name>.png (don't save more than that — pick the ones that
   actually matter for the report).
 
-When done, update /home/user/state.json with:
+When done, run a run_python call that updates /home/user/state.json with:
 - "eda_findings": a list of 2-5 short bullet-string insights (correlations
   that matter, notable distributions, outlier decisions)
+
+Printing your findings in your final answer text does not save them — you
+must actually execute the write. A finished turn with an empty or unwritten
+eda_findings list means later nodes and the report will have nothing to
+reference, so do this before you stop.
 
 Then print your findings list, and stop.
