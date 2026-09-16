@@ -21,6 +21,8 @@ worked, but:
 
 ## Why an agentic approach at all
 
+
+
 Data analysis is a good fit for the **code-execution agent** pattern (the
 same idea behind Open Interpreter / ChatGPT's Code Interpreter): rather than
 asking an LLM to *describe* an analysis, give it a real Python kernel and let
@@ -161,7 +163,7 @@ regressed task classification or model quality, instead of eyeballing one run.
 
 ```bash
 cp .env.example .env   # fill in OPENAI_API_KEY and E2B_API_KEY
-# Note: running this makes real OpenAI + E2B API calls billed to your own account.
+
 pip install -r requirements.txt
 
 # CLI
